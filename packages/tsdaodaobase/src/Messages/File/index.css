@@ -1,0 +1,102 @@
+.wk-message-file {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 0;
+    max-width: 300px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    position: relative;
+    min-height: 50px;
+}
+
+.wk-message-file:hover {
+    opacity: 0.9;
+}
+
+.wk-message-file.downloading {
+    cursor: progress;
+    opacity: 0.8;
+}
+
+.wk-message-file-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.wk-message-file-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.wk-message-file-info {
+    flex: 1;
+    min-width: 0;
+    padding-right: 60px; /* 给时间戳预留空间 */
+}
+
+.wk-message-file-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    word-break: break-all;
+    line-height: 1.3;
+    padding-right: 10px; /* 额外的右边距防止重叠 */
+}
+
+.wk-message-file-size {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.wk-message-file-download {
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    flex-shrink: 0;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    position: absolute;
+    right: 32px; /* 在时间戳左边 */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.wk-message-file:hover .wk-message-file-download {
+    opacity: 1;
+}
+
+.wk-message-file-download svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.wk-message-file-downloading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-icon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 让MessageTrail定位在右下角，但不重叠 */
+.wk-message-file .messageMeta {
+    position: absolute;
+    bottom: 4px;
+    right: 0;
+    font-size: 11px;
+} 

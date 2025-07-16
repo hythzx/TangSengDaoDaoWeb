@@ -15,13 +15,37 @@ export class MediaMessageUploadTask extends MessageTask {
         return uuid.join('');
       }
 
+    // 清理文件名，移除特殊字符，保留可用于路径的部分
+    cleanFileName(fileName: string): string {
+        if (!fileName) return '';
+        
+        // 获取文件名（不包含扩展名）
+        const lastDotIndex = fileName.lastIndexOf('.');
+        const nameWithoutExt = lastDotIndex > 0 ? fileName.substring(0, lastDotIndex) : fileName;
+        
+        // 移除或替换特殊字符，保留中文、英文、数字、下划线、短横线
+        const cleaned = nameWithoutExt
+            .replace(/[<>:"/\\|?*]/g, '') // 移除Windows文件系统不允许的字符
+            .replace(/\s+/g, '_') // 将空格替换为下划线
+            .replace(/[^\w\u4e00-\u9fa5-]/g, '') // 只保留字母、数字、下划线、短横线和中文字符
+            .substring(0, 50); // 限制长度避免路径过长
+        
+        return cleaned || 'file'; // 如果清理后为空，则使用默认名称
+    }
+
     async start(): Promise<void> {
         const mediaContent = this.message.content as MediaMessageContent
         if(mediaContent.file) {
             const param = new FormData();
             param.append("file", mediaContent.file);
-            const fileName = this.getUUID();
-            const path = `/${this.message.channel.channelType}/${this.message.channel.channelID}/${fileName}${mediaContent.extension??""}`
+            const uuid = this.getUUID();
+            
+            // 生成更有意义的文件名：清理后的原始文件名 + 短UUID + 扩展名
+            const cleanedName = this.cleanFileName(mediaContent.file.name);
+            const shortUuid = uuid.substring(0, 8); // 使用短UUID避免路径过长
+            const fileName = `${cleanedName}_${shortUuid}`;
+            
+            const path = `/${this.message.channel.channelType}/${this.message.channel.channelID}/${fileName}.${mediaContent.extension??""}`
             const uploadURL = await  this.getUploadURL(path)
             if(uploadURL) {
                 this.uploadFile(mediaContent.file,uploadURL)

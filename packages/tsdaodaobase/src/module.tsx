@@ -78,6 +78,8 @@ import APIClient from "./Service/APIClient";
 import { ChannelAvatar } from "./Components/ChannelAvatar";
 import { ScreenshotCell, ScreenshotContent } from "./Messages/Screenshot";
 import ImageToolbar from "./Components/ImageToolbar";
+import FileToolbar from "./Components/FileToolbar";
+import { FileContent, FileCell } from "./Messages/File";
 import { ProhibitwordsService } from "./Service/ProhibitwordsService";
 import { SubscriberList } from "./Components/Subscribers/list";
 import GlobalSearch from "./Components/GlobalSearch";
@@ -134,6 +136,8 @@ export default class BaseModule implements IModule {
             return LottieStickerCell;
           case MessageContentTypeConst.location: // 定位
             return LocationCell;
+          case MessageContentTypeConst.file: // 文件
+            return FileCell;
           case MessageContentTypeConst.screenshot:
             return ScreenshotCell;
           case MessageContentType.signalMessage: // 端对端加密错误消息
@@ -184,6 +188,10 @@ export default class BaseModule implements IModule {
       MessageContentTypeConst.mergeForward,
       () => new MergeforwardContent()
     ); // 合并转发
+    WKSDK.shared().register(
+      MessageContentTypeConst.file,
+      () => new FileContent()
+    ); // 文件
     WKSDK.shared().register(
       MessageContentTypeConst.screenshot,
       () => new ScreenshotContent()
@@ -542,6 +550,15 @@ export default class BaseModule implements IModule {
           icon={require("./assets/toolbars/func_upload_image.svg").default}
           conversationContext={ctx}
         ></ImageToolbar>
+      );
+    });
+
+    WKApp.endpoints.registerChatToolbar("chattoolbar.file", (ctx) => {
+      return (
+        <FileToolbar
+          icon={require("./assets/toolbars/func_upload_file.svg").default}
+          conversationContext={ctx}
+        ></FileToolbar>
       );
     });
   }
