@@ -5,12 +5,8 @@ on:
     branches: [ master, main ]
     tags: [ 'v*' ]
     paths:
-      - 'web/**'
+      - '*'
       - '.github/workflows/build-web.yml'
-  pull_request:
-    branches: [ master, main ]
-    paths:
-      - 'web/**'
 
 env:
   REGISTRY: docker.io
