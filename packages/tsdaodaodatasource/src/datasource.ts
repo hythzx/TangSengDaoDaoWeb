@@ -252,22 +252,24 @@ export class CommonDataSource implements ICommonDataSource {
 
     }
     imConnectAddr(): Promise<string> {
-        return WKApp.apiClient.get(`users/${WKApp.loginInfo.uid}/im`).then((resp) => {
-            let addr = resp.wss_addr
-            if(!addr || addr==='') {
-                addr =  resp.ws_addr
-            }
-            return addr
-        });
+        return Promise.resolve('/im-ws')
+        // return WKApp.apiClient.get(`users/${WKApp.loginInfo.uid}/im`).then((resp) => {
+        //     let addr = resp.wss_addr
+        //     if(!addr || addr==='') {
+        //         addr =  resp.ws_addr
+        //     }
+        //     return addr
+        // });
     }
     imConnectAddrs(): Promise<string[]> {
-        return WKApp.apiClient.get(`users/${WKApp.loginInfo.uid}/im`).then((resp) => {
-            let addr = resp.wss_addr
-            if(!addr || addr==='') {
-                addr =  resp.ws_addr
-            }
-            return [addr]
-        });
+        return Promise.resolve(['/im-ws'])
+        // return WKApp.apiClient.get(`users/${WKApp.loginInfo.uid}/im`).then((resp) => {
+        //     let addr = resp.wss_addr
+        //     if(!addr || addr==='') {
+        //         addr =  resp.ws_addr
+        //     }
+        //     return [addr]
+        // });
     }
 
     toContacts(resultDic: any): Contacts {

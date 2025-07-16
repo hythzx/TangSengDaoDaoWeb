@@ -8,6 +8,26 @@ const addDevServerConfig = () => config => {
     ...config,
     client: {
       overlay: false
+    },
+    proxy: {
+      '/api': {
+        // target: 'http://127.0.0.1:8090',
+        target: 'http://192.168.3.121:8090',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      },
+      // WebSocket代理配置 - 简化版本用于调试
+      '/im-ws': {
+        target: 'ws://192.168.3.121:5200',
+        changeOrigin: true,
+        ws: true,
+        secure: false,
+        pathRewrite: {
+          '^/im-ws': ''
+        }
+      }
     }
   };
 }
